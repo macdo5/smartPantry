@@ -14,9 +14,11 @@ completeImage = Image.new('RGB', completeImageSize)
 # begin stitching all the images together, starting from top left image and working across the row
 # each row creates a new image made from pictures stitched together horizontally.
 # at the end of the row, the new image is appended vertically to the final image.
-for row in range(rows):
-    for column in range(columns):
-        tempImage = Image.open(sys.argv[3 + row + column])
+for column in range(columns):
+    for row in range(rows):
+        num = 3 +(columns * column + row)
+        tempImage = Image.open(sys.argv[num])
+        print(sys.argv[num])
         location = (row * tempImageSize[0], column * tempImageSize[1])
         completeImage.paste(tempImage, location)
 completeImage.save("complete.png")
