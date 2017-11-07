@@ -23,6 +23,8 @@ def createImage(dirPath, rows, columns):
     now = datetime.datetime.now()
     strNow = str(now) + ".jpg"
     completeImage.save(strNow)
+    path = os.getcwd() + "/" + strNow
+    return path
 
 def directoryExists(dirPath):
     exists = os.path.exists(dirPath)
@@ -46,15 +48,17 @@ def constructFileUrl(dirPath, row, column):
 
 # The sys.argv object is an array of arguments passed to the script, where the name of the script is
 # always the first object.
-rows = 1 #int(sys.argv[1])
-columns = 10 #int(sys.argv[2])
-dirPath = "/home/oscar/Pictures/pantryImages/" #sys.argv[3]
+rows = int(sys.argv[1])
+columns = int(sys.argv[2])
+dirPath = sys.argv[3]
 # check if the user has added a slash on the end of the directory path argument. If not, add one.
 if dirPath[-1:] != "/": dirPath += "/"
 # convert ~ and ~user of the dirPath into $HOME
 dirPath = os.path.expanduser(dirPath)
+image = ""
 if directoryExists(dirPath):
     if allPicturesReadable(dirPath, rows, columns):
-        createImage(dirPath, rows, columns)
+        image = createImage(dirPath, rows, columns)
     else: print("Not all pictures are readable")
 else: print("directory does not exist")
+exit(image)

@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     # from https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Authentication
     url(r'^accounts/', include('django.contrib.auth.urls')),
+    url(r'', include('pantry.urls')),
 ]
 
 if settings.DEBUG is True:
