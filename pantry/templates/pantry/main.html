@@ -4,7 +4,11 @@
     </head>
     <body>
         <p>Hi there!</p>
-        <img src="{{ myPantry.completeImage.url }}">
+        <img src="{{ MEDIA_URL}}{{ myPantry.completeImage.url }}"/>
         <p>It works!</p>
+        <p>the path to the image of my pantry is {{ myPantry.completeImage.path }}</p>
+        <p>the url to the image of my pantry is {{ myPantry.completeImage.url }}</p>
+        <p>the name of the image of my pantry is {{ myPantry.completeImage.name }}</p>
+        {{ myPantry.completeImage}}
     </body>
 </html>

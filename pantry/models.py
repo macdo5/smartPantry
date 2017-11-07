@@ -1,4 +1,6 @@
 from __future__ import print_function
+from django.core.files import File
+from django.conf import settings
 from django.db import models
 from django.utils import timezone
 import sys
@@ -13,7 +15,7 @@ class Pantry(models.Model):
     last_update = models.DateTimeField(default=timezone.now)
     columns = models.IntegerField() # the number of columns in the 2D array of images
     rows = models.IntegerField()    # the number of rows in the 2D array of images
-    completeImage = models.ImageField(null=True, blank=True, upload_to='media') # stores a picture of the complete pantry 
+    completeImage = models.ImageField(null=True, blank=True, upload_to='pantry_image_path') # stores a picture of the complete pantry 
     
     def update(self):
         # this is where all images have to be updated (or maybe that belongs to PantryImage?)
@@ -61,7 +63,8 @@ class Pantry(models.Model):
                 newCompleteImage.paste(tempImage, location)
         now = datetime.datetime.now()
         strNow = str(now) + ".jpg"
-        self.completeImage = newCompleteImage
+        absolutePath = settings.MEDIA_ROOT + "/pantry_image_path/" + strNow
+        newCompleteImage.save(absolutePath)
+        path = "pantry_image_path/" + strNow
+        self.completeImage = path
         self.save()
-        path = os.getcwd() + "/" + strNow
-        return path
