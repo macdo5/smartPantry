@@ -1,14 +1,11 @@
 <html>
     <head>
         <title>Smart Pantry</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     </head>
     <body>
-        <p>Hi there!</p>
-        <img src="{{ MEDIA_URL}}{{ myPantry.completeImage.url }}"/>
-        <p>It works!</p>
-        <p>the path to the image of my pantry is {{ myPantry.completeImage.path }}</p>
-        <p>the url to the image of my pantry is {{ myPantry.completeImage.url }}</p>
-        <p>the name of the image of my pantry is {{ myPantry.completeImage.name }}</p>
-        {{ myPantry.completeImage}}
+        {{ myPantry.name }}
+        <img class="img-responsive" src="{{ MEDIA_URL}}{{ myPantry.completeImage.url }}"/>
+        <p>Last update: {{ myPantry.last_update }}</p>
     </body>
 </html>

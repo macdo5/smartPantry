@@ -12,4 +12,6 @@ Django version 1.11.5, using settings 'smartPantry.settings'
 Starting development server at http://127.0.0.1:8000/
 Quit the server with CONTROL-C.
 ```
-5. Open your web browser (Chrome, Firefox or Edge are recommended) and navigate to `localhost:8000` or `127.0.0.1:8000`. The pantry image should load after a few seconds.
+5. Open your web browser (Chrome, Firefox or Edge are recommended) and navigate to `localhost:8000` or `127.0.0.1:8000`. There is currently a default pantry already in the datatbase called myPantry. It has 1 row and 10 columns. The Django views and templates are built to display this single pantry only. In future development this will change so that every user will be able to view their own pantry. The pantry image should load after a few seconds.
+
+The reason why it takes so long to load is because it is constructing a single .jpg out of multiple images. There are 10 pictures that the web app needs to stitch together, so the more columns and rows in a pantry and the higher the resolution of the pictures, the longer it takes for the web app to stitch them all together.

@@ -29,7 +29,7 @@ class Pantry(models.Model):
         exists = os.path.exists(dirPath)
         return exists
 
-    def constructFileUrl(self, dirPath, row, column):
+    def constructJpgUrl(self, dirPath, row, column):
         return dirPath + str(row) + "_" + str(column) + ".jpg"
 
     def allPicturesReadable(self, dirPath):
@@ -37,7 +37,7 @@ class Pantry(models.Model):
         for column in range(self.columns):
             for row in range(self.rows):
                 # build the full file url
-                fileUrl = self.constructFileUrl(dirPath, row, column)
+                fileUrl = self.constructJpgUrl(dirPath, row, column)
                 if not os.path.isfile(fileUrl): 
                     return False # if the file does not exist, return false (error: not all files exist)
                 if not os.access(fileUrl, os.R_OK): 
@@ -46,7 +46,7 @@ class Pantry(models.Model):
         return True
 
     def createImage(self, dirPath):
-        fileUrl = self.constructFileUrl(dirPath, 0, 0)
+        fileUrl = self.constructJpgUrl(dirPath, 0, 0)
         tempImage = Image.open(fileUrl)
         tempImageSize = tempImage.size
         newCompleteImageSize = (tempImageSize[0] * self.columns, tempImageSize[1] * self.rows)
@@ -57,7 +57,7 @@ class Pantry(models.Model):
         # at the end of the row, the new image is appended vertically to the final image.
         for column in range(self.columns):
             for row in range(self.rows):
-                fileUrl = self.constructFileUrl(dirPath, row, column)
+                fileUrl = self.constructJpgUrl(dirPath, row, column)
                 tempImage = Image.open(fileUrl)
                 location = (column * tempImageSize[0], row * tempImageSize[1])
                 newCompleteImage.paste(tempImage, location)
@@ -68,3 +68,4 @@ class Pantry(models.Model):
         path = "pantry_image_path/" + strNow
         self.completeImage = path
         self.save()
+        self.update()
