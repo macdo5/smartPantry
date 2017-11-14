@@ -4,8 +4,8 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     </head>
     <body>
-        {{ myPantry.name }}
-        <img class="img-responsive" src="{{ MEDIA_URL}}{{ myPantry.completeImage.url }}"/>
+        <p>{{ myPantry.name }}</p>
+        <img class="img-responsive" style="max-height:100vh;max-width:100vh" src="{{ MEDIA_URL}}{{ myPantry.completeImage.url }}"/>
         <p>Last update: {{ myPantry.last_update }}</p>
     </body>
 </html>
