@@ -47,25 +47,26 @@ class Pantry(models.Model):
 
     def createImage(self, dirPath):
         fileUrl = self.constructJpgUrl(dirPath, 0, 0)
-        tempImage = Image.open(fileUrl)
-        tempImageSize = tempImage.size
-        newCompleteImageSize = (tempImageSize[0] * self.columns, tempImageSize[1] * self.rows)
+	if self.allPicturesReadable(dirPath):
+        	tempImage = Image.open(fileUrl)
+	        tempImageSize = tempImage.size
+	        newCompleteImageSize = (tempImageSize[0] * self.columns, tempImageSize[1] * self.rows)
 
-        newCompleteImage = Image.new('RGB', newCompleteImageSize)
-        # begin stitching all the images together, starting from top left image and working across the row
-        # each row creates a new image made from pictures stitched together horizontally.
-        # at the end of the row, the new image is appended vertically to the final image.
-        for column in range(self.columns):
-            for row in range(self.rows):
-                fileUrl = self.constructJpgUrl(dirPath, row, column)
-                tempImage = Image.open(fileUrl)
-                location = (column * tempImageSize[0], row * tempImageSize[1])
-                newCompleteImage.paste(tempImage, location)
-        now = datetime.datetime.now()
-        strNow = str(now) + ".jpg"
-        absolutePath = settings.MEDIA_ROOT + "/pantry_image_path/" + strNow
-        newCompleteImage.save(absolutePath)
-        path = "pantry_image_path/" + strNow
-        self.completeImage = path
-        self.save()
-        self.update()
+        	newCompleteImage = Image.new('RGB', newCompleteImageSize)
+	       # begin stitching all the images together, starting from top left image and working across the row
+	       # each row creates a new image made from pictures stitched together horizontally.
+	       # at the end of the row, the new image is appended vertically to the final image.
+	        for column in range(self.columns):
+        	    for row in range(self.rows):
+          		fileUrl = self.constructJpgUrl(dirPath, row, column)
+                	tempImage = Image.open(fileUrl)
+	                location = (column * tempImageSize[0], row * tempImageSize[1])
+        	        newCompleteImage.paste(tempImage, location)
+        	now = datetime.datetime.now()
+        	strNow = str(now) + ".jpg"
+        	absolutePath = settings.MEDIA_ROOT + "/pantry_image_path/" + strNow
+	        newCompleteImage.save(absolutePath)
+        	path = "pantry_image_path/" + strNow
+	        self.completeImage = path
+        	self.save()
+	        self.update()
