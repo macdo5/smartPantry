@@ -1,21 +1,22 @@
 from __future__ import print_function
-from django.core.files import File
-from django.conf import settings
-from django.db import models
-from django.utils import timezone
 import sys
 import os.path
 import datetime
+from django.conf import settings
+from django.db import models
+from django.utils import timezone
 from PIL import Image
 
+
 class Pantry(models.Model):
+    pantry_image_path = "pantry_image_path" # class variable, may need to change if pantries need their own path.
     name = models.CharField(max_length=200)
     description = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
     last_update = models.DateTimeField(default=timezone.now)
     columns = models.IntegerField() # the number of columns in the 2D array of images
     rows = models.IntegerField()    # the number of rows in the 2D array of images
-    completeImage = models.ImageField(null=True, blank=True, upload_to='pantry_image_path') # stores a picture of the complete pantry 
+    completeImage = models.ImageField(null=True, blank=True, upload_to=pantry_image_path) # stores a picture of the complete pantry 
     
     def update(self):
         # this is where all images have to be updated (or maybe that belongs to PantryImage?)
@@ -47,7 +48,7 @@ class Pantry(models.Model):
 
     def createImage(self, dirPath):
         fileUrl = self.constructJpgUrl(dirPath, 0, 0)
-	if self.allPicturesReadable(dirPath):
+        if self.allPicturesReadable(dirPath):
         	tempImage = Image.open(fileUrl)
 	        tempImageSize = tempImage.size
 	        newCompleteImageSize = (tempImageSize[0] * self.columns, tempImageSize[1] * self.rows)
@@ -64,9 +65,10 @@ class Pantry(models.Model):
         	        newCompleteImage.paste(tempImage, location)
         	now = datetime.datetime.now()
         	strNow = str(now) + ".jpg"
-        	absolutePath = settings.MEDIA_ROOT + "/pantry_image_path/" + strNow
+            
+        	absolutePath = settings.MEDIA_ROOT + "/" + self.pantry_image_path + "/" + strNow
 	        newCompleteImage.save(absolutePath)
-        	path = "pantry_image_path/" + strNow
+        	path = self.pantry_image_path + "/" + strNow
 	        self.completeImage = path
         	self.save()
 	        self.update()
